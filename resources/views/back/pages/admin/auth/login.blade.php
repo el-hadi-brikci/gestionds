@@ -12,7 +12,7 @@
                                 <div class="alert alert-danger">
                                     {{Session::get('fail')}}
                                     <button type="button" class="close" data-dissmiss="alert" aria-label="close">
-                                    <span aria-hidden="true">&time;</span>
+                                    <span aria-hidden="true"></span>
                                     <button>
                                 </div>
                                 @endif
