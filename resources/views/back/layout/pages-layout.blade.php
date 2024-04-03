@@ -61,6 +61,7 @@
 		</script>
 		<!-- End Google Tag Manager -->
 		<link rel="stylesheet" href="/extra-assets/ijabo/ijabo.min.css">
+		<link rel="stylesheet" href="/extra-assets/ijaboCropTool/ijaboCropTool.min.css">
 		@livewireStyles
         @stack('stylesheets')
 	</head>
@@ -539,6 +540,7 @@
 			</script>
 		<script src="/extra-assets/ijabo/ijabo.min.js"></script>
 		<script src="/extra-assets/ijabo/jquery.ijaboViewer.min.js"></script>
+		<script src="/extra-assets/ijaboCropTool/ijaboCropTool.min.js"></script>
 		<script>
 			window.addEventListener('showToastr', function(event){
 			toastr.remove();
