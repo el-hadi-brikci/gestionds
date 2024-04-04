@@ -69,6 +69,23 @@ class AdminProfileTabs extends Component
             'passsword'=>Hash::make($this->new_password)
         ]);
         if($query){
+            $_admin = Admin::findOrFail($this->admin-id);
+            $data = array(
+                'admin' => $_admin,
+                'new_password' => $this->new_password
+            );
+            $mail_body = view('email-templates.admin-reset-email-template', $data)->render();
+            $mailConfig = array(
+                'mail_from_email' => env('EMAIL_FROM_ADDRESS'),
+                'mail_from_name' => env('EMAIL_FROM_NAME'),
+                'mail_recipient_email' => $_admin->email,
+                'mail_recipient_name' => $_admin->name,
+                'mail_subject' => 'Password changed',
+                'mail_body' => $mail_body   
+            );
+        
+            sendEmail($mailConfig);
+
             $this->current_password = $this->new_password=$this->new_password_confirmation=null;
             $this->showToastr('success','Password successfully changed');
 
