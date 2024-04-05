@@ -45,6 +45,7 @@
 		/>
 		<link rel="stylesheet" type="text/css" href="/back/vendors/styles/style.css" />
 		<link rel="stylesheet" href="/extra-assets/ijabo/ijabo.min.css">
+		@livewireStyles
 		@stack('stylesheets')
 	</head>
 	<body class="login-page">
@@ -59,7 +60,7 @@
 				</div>
 				<div class="login-menu">
 					<ul>
-						@if ( !Route::is('admin.*') )
+						@if ( !Route::is('admin*') )
 							<li><a href="register.html">Register</a></li>
 						@endif
 					</ul>
@@ -105,5 +106,7 @@
 			else{ return false;}
 			});
 			</script>
+			@livewireScripts
+			@stack('scripts')
 	</body>
 </html>

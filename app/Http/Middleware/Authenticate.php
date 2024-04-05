@@ -13,7 +13,7 @@ class Authenticate extends Middleware
     protected function redirectTo(Request $request)
     {
         if($request->expectsJson()){
-            if($request->routeIs('admin.*')){
+            if($request->routeIs('admin*')){
                 session()->flash('fail','you must login first');
                 return route('adminlogin');
             }
