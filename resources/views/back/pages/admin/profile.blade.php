@@ -46,29 +46,3 @@
 </div>
 
      @endsection
-     @push('scripts')    
-          <script>
-               window.addEventListener('updateAdminInfo', function(event){
-                    $('#adminProfileName').html(event.detail.adlinName);
-                    $('#adminProfileEmail').html(event.detail.adlinEmail);
-               });
-               
-          $('input[type="file"][name="adminProfilePictureFile"][id="adminProfilePictureFile"]').ijaboCropTool({
-          preview : '#adminProfilePicture',
-          setRatio:1,
-          allowedExtensions: ['jpg', 'jpeg','png'],
-          buttonsText:['CROP','QUIT'],
-          buttonsColor:['#30bf7d','#ee5155', -15],
-          processUrl:'{{ route("adminchange-profile-picture")}}',
-          withCSRF:['_token','{{ csrf_token() }}'],
-          onSuccess:function(message, element, status){
-               livewire.imit('updateAdminSellerHeaderInfo');
-               toastr.success(message);
-          },
-          onError:function(message, element, status){
-            toastr.error(message);
-          }
-       });
-          </script>
-     @endpush
-     
