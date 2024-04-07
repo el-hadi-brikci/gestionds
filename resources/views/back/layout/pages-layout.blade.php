@@ -61,7 +61,6 @@
 		</script>
 		<!-- End Google Tag Manager -->
 		<link rel="stylesheet" href="/extra-assets/ijabo/ijabo.min.css">
-		<link rel="stylesheet" href="/extra-assets/ijaboCropTool/ijaboCropTool.min.css">
 		@livewireStyles
         @stack('stylesheets')
 	</head>
@@ -436,7 +435,7 @@
 					<ul id="accordion-menu">
 						@if (Route::is('admin*'))
 						<li>
-							<a href="{{route('admin.home')}}" class="dropdown-toggle no-arrow">
+							<a href="{{route('adminhome')}}" class="dropdown-toggle no-arrow">
 								<span class="micon fa fa-home"></span
 								><span class="mtext">Home</span>
 							</a>
@@ -457,8 +456,8 @@
 						</li>
 						<li>
 							<a
-								href="{{route('admin.profile')}}"
-								target="_blank"
+								href="{{route('adminprofile')}}"
+								
 								class="dropdown-toggle no-arrow"
 							>
 								<span class="micon fa fa-user"></span>
@@ -491,7 +490,7 @@
 						</li>
 						<li>
 							<a
-								href=""
+								href="{{route('adminprofile')}}"
 								target="_blank"
 								class="dropdown-toggle no-arrow"
 							>
@@ -540,7 +539,6 @@
 			</script>
 		<script src="/extra-assets/ijabo/ijabo.min.js"></script>
 		<script src="/extra-assets/ijabo/jquery.ijaboViewer.min.js"></script>
-		<script src="/extra-assets/ijaboCropTool/ijaboCropTool.min.js"></script>
 		<script>
 			window.addEventListener('showToastr', function(event){
 			toastr.remove();
