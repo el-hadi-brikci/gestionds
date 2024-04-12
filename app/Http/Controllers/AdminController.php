@@ -11,7 +11,8 @@ use constDefaults;
 use App\Models\Admin;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facade\File;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class AdminController extends Controller
 {
@@ -191,23 +192,29 @@ class AdminController extends Controller
         return view('back.pages.admin.profile', compact('admin'));
     }
     public function changeProfilePicture(Request $request){
-        $admin = Admin.findOrFail(auth('admin')->id());
-        $path ='images/users/admins/';
-        $file = $request->file('adminProfilePictureFile');
-        $old_picture = $admin->getAttributes()['picture'];
-        $file_path = $path.$old_picture;
-        $filename = 'ADMIN_IMG_'.rand(2,1000).$admin->id.time().uniqid().'.jpg';
-        
-        $upload = $file->move(public_path($path),$filename);
-
-        if ($upload){
-            if( $old_picture != null && File::exists(public_path($path.$old_picture)) ){
-                File::delete(public_path($path.$old_picture));
+        try {
+            $admin = Admin::findOrFail(auth('admin')->id());
+            $path ='images/users/admins/';
+            $file = $request->file('adminProfilePictureFile');
+            $old_picture = $admin->getAttributes()['picture'];
+            $file_path = $path.$old_picture;
+            $filename = 'ADMIN_IMG_'.rand(2,1000).$admin->id.time().uniqid().'.jpg';
+            
+            $upload = $file->move(public_path($path),$filename);
+    
+            if ($upload){
+                if( $old_picture != null && File::exists(public_path($path.$old_picture)) ){
+                    File::delete(public_path($path.$old_picture));
+                }
+                $admin->update(['picture'=> $filename]);
+                return response()->json(['status'=>1,'msg'=>'Your profile picture has been successfully updated.']);
+            }else{
+                throw new \Exception('File upload failed');
             }
-            $admin->update(['picture'=> $filename]);
-            return response()->json(['status'=>1,'msg'=>'Your profile picture has been successfully updated.']);
-        }else{
-            return response()->json(['status'=>0,'msg'=>'Something went wrong.']);
+        } catch (\Exception $e) {
+            return response()->json(['status'=>0,'msg'=>'Something wenong.', 'error' => $e->getMessage()]);
         }
     }
+    
+    
 }

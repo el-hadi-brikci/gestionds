@@ -21,11 +21,16 @@ class Seller extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
         'username',
+        'email',
         'password',
+        'picture',
+        "address",
+        'phone',
         'email_verified_at',
-        'status'
+        'status',
+        'payment_method',
+        'payment_email'
     ];
 
     /**

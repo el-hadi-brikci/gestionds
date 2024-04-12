@@ -12,15 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('clients', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->id();
             $table->string('name')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
+            $table->string('username')->unique()->nullable();
+            $table->string('email')->unique()->nullable();
+            $table->string('password')->nullable();
+            $table->string('picture')->nullable();
             $table->string('address')->nullable();
-            $table->string('password');
+            $table->string('phone')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->enum('status', ['Pending', 'Active'])->default('Pending');
-            $table->timestamps(); // This will add created_at and updated_at columns automatically
+            $table->timestamps();
         });
+        
     }
 
     /**

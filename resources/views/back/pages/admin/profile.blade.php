@@ -1,3 +1,4 @@
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @extends('back.layout.pages-layout')
 @section('pageTitle',isset($pageTitle)? $pageTitle : " Profile ")
 @section('content')
@@ -47,26 +48,32 @@
 
      @endsection
      @push('scripts')
-          <script>
-               window.addEventListener('updateAdminInfo', function(event){
-                    $('#adminProfileName').html(event.detail.adlinName);
-                    $('#adminProfileEmail').html(event.detail.adlinEmail);
-               });
-
-               $('input[type="file"][name="adminProfilePictureFile"][id="adminProfilePictureFile"]').ijaboCropTool({
-          preview : '#adminProfilePicture',
-          setRatio:1,
-          allowedExtensions: ['jpg', 'jpeg','png'],
-          buttonsText:['CROP','QUIT'],
-          buttonsColor:['#30bf7d','#ee5155', -15],
-          processUrl:'{{ route("adminchange-profile-picture") }}',
-          onSuccess:function(message, element, status){
-             toastr.Success(message);
-          },
-          onError:function(message, element, status){
-            toastr.error(message);
-          }
-       });
-
-          </script>
-     @endpush
+     <script>
+         window.addEventListener('updateAdminInfo', function(event){
+             $('#adminProfileName').html(event.detail.adlinName);
+             $('#adminProfileEmail').html(event.detail.adlinEmail);
+         });
+ 
+         // Add this line to get the CSRF token
+         let csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+ 
+         $('input[type="file"][name="adminProfilePictureFile"][id="adminProfilePictureFile"]').ijaboCropTool({
+             preview : '#adminProfilePicture',
+             setRatio:1,
+             allowedExtensions: ['jpg', 'jpeg','png'],
+             buttonsText:['CROP','QUIT'],
+             buttonsColor:['#30bf7d','#ee5155', -15],
+             processUrl:'{{ route("adminchange-profile-picture") }}',
+             // Add the CSRF token to the headers
+             withCSRF:['_token', '{{ csrf_token() }}'],
+             onSuccess:function(message, element, status){
+               Livewire.emit('updateAdminSellerHeaderInfo');
+                 toastr.success(message);
+             },
+             onError:function(message, element, status){
+                toastr.error(message);
+             }
+         });
+     </script>
+ @endpush
+ 
