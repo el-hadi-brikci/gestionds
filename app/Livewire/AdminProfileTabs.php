@@ -90,11 +90,11 @@ class AdminProfileTabs extends Component
     }
 
     public function showToastr($type, $message){
-            return $this->dispatch('showToastr',[
-                'type'=>$type,
-                'message'=>$message
-            ]);
-    }
+        return $this->dispatch('showToastr',[
+            'type'=>$type,
+            'message'=>$message
+        ]);
+}
     public function render()
     {
         return view('livewire.admin-profile-tabs');

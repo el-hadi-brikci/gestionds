@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
+use App\Models\GeneralSetting;
 
 class AdminController extends Controller
 {
@@ -214,7 +215,62 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             return response()->json(['status'=>0,'msg'=>'Something wenong.', 'error' => $e->getMessage()]);
         }
+    }   
+
+    public function changeLogo(Request $request){
+        $request->validate([
+            'site_logo' => 'required|image|max:2048', // Validate the file
+        ]);
+    
+        $path = 'images/site/';
+        $file = $request->file('site_logo');
+        $settings = new GeneralSetting();
+        $old_logo = $settings->first()->site_logo;
+        $file_path = $path.$old_logo;
+        $filename = 'LOGO_'.uniqid().'.'.$file->getClientOriginalExtension();
+    
+        try {
+            $upload = $file->move(public_path($path),$filename);
+    
+            if( $upload ){
+                if( $old_logo != null && File::exists(public_path($path.$old_logo)) ){
+                    File::delete(public_path($path.$old_logo));
+                }
+    
+                DB::transaction(function () use ($settings, $filename) { // Use a transaction
+                    $settings = $settings->first();
+                    $settings->site_logo = $filename;
+                    $settings->save();
+                });
+    
+                return response()->json(['status'=>1, 'msg' =>'Site logo has been updated successfully.']);
+            } else {
+                return response()->json([ 'status'=>0, 'msg'=>'File upload failed.']);
+            }
+        } catch (\Exception $e) {
+            return response()->json([ 'status'=>0, 'msg'=>'Something went wrong: ' . $e->getMessage()]);
+        }
     }
     
-    
+    public function changeFavicon(Request $request){
+        $path = 'images/site/';
+        $file = $request->file('site_favicon');
+        $settings = new GeneralSetting();
+        $old_favicon = $settings->first()->site_favicon;
+        $filename = 'FAV_'.uniqid().'.'. $file->getClientOriginalExtension();
+        $upload = $file->move(public_path($path), $filename);
+
+    if( $upload ){
+        if( $old_favicon != null && File::exists(public_path($path.$old_favicon)) ){
+             File::delete(public_path($path.$old_favicon));
+        }
+         $settings = $settings->first();
+         $settings->site_favicon = $filename;
+         $update = $settings->save();
+
+    return response()->json(['status'=>1, 'msg'=>'Done!, site favicon has been updated successfully.']);
+    }else{
+    return response()->json(['status'=>0, 'Something went wrong.']);
+    }       
+}
 }
